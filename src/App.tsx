@@ -23,7 +23,7 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>react-neumorphic</h1>
+        <h1>React Neumorphic Design</h1>
         <p>Neumorphic UI Components for React</p>
       </header>
 
@@ -156,7 +156,7 @@ function App() {
           </div>
         </section>
 
-        <section className="usage-section">
+        {/* <section className="usage-section">
           <h2>Usage</h2>
           <pre>
             <code>
@@ -181,7 +181,7 @@ function App() {
 />`}
             </code>
           </pre>
-        </section>
+        </section> */}
       </main>
     </div>
   );
