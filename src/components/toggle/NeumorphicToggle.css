@@ -1,0 +1,299 @@
+/* Neumorphic Toggle Component Styles */
+
+:root {
+    /* Handle margin for separation */
+    --handle-margin: 2px;
+
+    /* Light mode colors */
+    --light-bg: #e6e7ee;
+    --light-shadow-dark: #676768;
+    --light-shadow-light: #ffffff;
+    --light-text: #676b79;
+    --light-handle-bg: #f8f9fa;
+    --light-handle-shadow-dark: #d1d9e6;
+    --light-handle-shadow-light: #ffffff;
+    --light-icon-color: #6c757d;
+
+    /* Dark mode colors */
+    --dark-bg: #3a3f53;
+    --dark-shadow-dark: #111318;
+    --dark-shadow-light: #4a5568;
+    --dark-text: #eff0f2;
+    --dark-handle-bg: #3a3f53;
+    --dark-handle-shadow-dark: #1a202c;
+    --dark-handle-shadow-light: #718096;
+    --dark-icon-color: #e2e8f0;
+}
+
+.neumorphic-toggle {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    border-radius: 9999px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Dynamic sizing - set via style props */
+    width: var(--toggle-width);
+    height: var(--toggle-height);
+
+    --inset-shadow-width: calc(var(--toggle-height) * 0.13);
+    --inset-dark-shift: calc(var(--toggle-height) * 0.10);
+    /* Scalable spacing variables based on toggle height */
+    --border-spacing: calc(var(--toggle-height) * 0.08);
+    /* 8% of height (3.84px for 48px default) */
+    --transition-spacing: calc(var(--toggle-height) * 0.062);
+    /* 6% of height (4.8px for 48px default) */
+    --track-padding-vertical: calc(var(--toggle-height) * 0.05);
+    /* 5% of height (2.4px for 48px default) */
+    --track-padding-horizontal: calc(var(--toggle-height) * 0.042);
+    /* 4.2% of height (2px for 48px default) */
+
+
+    /* Allow container to extend outside for border effect */
+    padding: var(--border-spacing);
+}
+
+.neumorphic-toggle:focus-visible {
+    outline: 2px solid #3182ce;
+    outline-offset: 2px;
+}
+
+.neumorphic-toggle.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Size variants */
+.neumorphic-toggle.small {
+    width: var(--toggle-small-width);
+    height: var(--toggle-small-height);
+}
+
+.neumorphic-toggle.medium {
+    width: var(--toggle-medium-width);
+    height: var(--toggle-medium-height);
+}
+
+.neumorphic-toggle.large {
+    width: var(--toggle-large-width);
+    height: var(--toggle-large-height);
+}
+
+/* Toggle track container - allows border to extend outside */
+.toggle-track-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 9999px;
+}
+
+.toggle-track-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    filter: blur(1px);
+    opacity: 0.8;
+    z-index: 0;
+}
+
+/* Toggle track container border effect */
+.neumorphic-toggle.off .toggle-track-container::before {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.24), rgba(255, 255, 255, 0.8));
+}
+
+.neumorphic-toggle.on .toggle-track-container::before {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.18));
+}
+
+/* Toggle track - the pill-shaped container */
+.toggle-track {
+    position: absolute;
+    top: var(--border-spacing);
+    left: var(--border-spacing);
+    width: calc(100% - 2 * (var(--track-padding-horizontal) + var(--border-spacing)));
+    height: calc(100% - 2 * (var(--track-padding-vertical) + var(--border-spacing)));
+    border-radius: 9999px;
+    padding: var(--track-padding-vertical) var(--track-padding-horizontal);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+/* Light mode track */
+.neumorphic-toggle.off .toggle-track {
+    background: var(--light-bg);
+    position: relative;
+    box-shadow:
+        inset 0 var(--border-spacing) var(--inset-shadow-width) var(--light-shadow-dark);
+}
+
+/* Dark mode track */
+.neumorphic-toggle.on .toggle-track {
+    background: var(--dark-bg);
+    position: relative;
+    box-shadow:
+        inset 0 var(--inset-dark-shift) var(--inset-shadow-width) var(--dark-shadow-dark);
+}
+
+/* Toggle handle - the circle that slides */
+.toggle-handle {
+    position: absolute;
+    top: 0;
+    left: var(--handle-left-position, 0);
+    margin: var(--handle-margin);
+    height: calc(100% - 2 * var(--handle-margin));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    aspect-ratio: 1;
+    z-index: 2;
+}
+
+/* Light mode handle (when toggle is off) */
+.neumorphic-toggle.off .toggle-handle {
+    --handle-left-position: 0;
+    background: var(--light-handle-bg);
+    position: relative;
+    box-shadow:
+        -2px 4px 8px var(--light-shadow-dark);
+}
+
+.neumorphic-toggle.off .toggle-handle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    padding: var(--transition-spacing);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.24), rgba(255, 255, 255, 0.8));
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    opacity: 0.8;
+    filter: blur(4px);
+}
+
+/* Dark mode handle (when toggle is on) */
+.neumorphic-toggle.on .toggle-handle {
+    --handle-left-position: calc(100% - 0.9 * var(--toggle-height));
+    background: var(--dark-handle-bg);
+    position: relative;
+    box-shadow:
+        2px 4px 8px var(--dark-shadow-dark);
+}
+
+.neumorphic-toggle.on .toggle-handle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    padding: var(--transition-spacing);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.18));
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    opacity: 0.85;
+    filter: blur(0.11px);
+}
+
+/* Toggle icon */
+.toggle-icon {
+    width: 60%;
+    height: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-icon svg {
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Icon colors */
+.neumorphic-toggle.off .toggle-icon {
+    color: var(--light-icon-color);
+}
+
+.neumorphic-toggle.on .toggle-icon {
+    color: var(--dark-icon-color);
+}
+
+/* Toggle labels */
+.toggle-labels {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 calc(var(--toggle-height) * 0.33);
+    pointer-events: none;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    line-height: 0.9em;
+    z-index: 1;
+    font-size: calc(var(--toggle-height) * 0.25);
+}
+
+.label-left,
+.label-right {
+    transition: opacity 0.1s cubic-bezier(0.4, 0, 1, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Label visibility and colors */
+.neumorphic-toggle.off .label-left {
+    color: var(--light-text);
+    opacity: 0;
+    /* Completely hidden */
+}
+
+.neumorphic-toggle.off .label-right {
+    color: var(--light-text);
+    opacity: 0.8;
+}
+
+.neumorphic-toggle.on .label-left {
+    color: var(--dark-text);
+    opacity: 0.6;
+}
+
+.neumorphic-toggle.on .label-right {
+    color: var(--dark-text);
+    opacity: 0;
+    /* Completely hidden */
+}
+
+/* Hover effects */
+.neumorphic-toggle:not(.disabled):hover .toggle-handle {
+    transform: scale(1.05);
+}
+
+/* Active state */
+.neumorphic-toggle:not(.disabled):active .toggle-handle {
+    transform: scale(0.95);
+}
+
+/* Centering the content column */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
